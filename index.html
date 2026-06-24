@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Primary Meta Tags -->
+  <!-- TODO: Replace with your paper title and author names -->
+  <meta name="title" content="GOAG: Generative and Object-Agnostic Grasp Planner for Dexterous Robotic Manipulation, J. Mérand">
+  <!-- TODO: Write a compelling 150-160 character description of your research -->
+  <meta name="description" content="We propose GOAG, a novel deep generative model that learns a compact latent representation of a specific gripper's contact surface distribution, enabling the efficient sampling of valid grasp configurations without relying on object-specific training data.">
+  <!-- TODO: Add 5-10 relevant keywords for your research area -->
+  <meta name="keywords" content="robotics, grasping, manipulation, machine learning, computer vision, AI, CVAE">
+  <!-- TODO: List all authors -->
+  <meta name="author" content="Julien Mérand, Boris Meden, Mathieu Grossard, Liming Chen">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="article">
+  <!-- TODO: Replace with your institution or lab name -->
+  <meta property="og:site_name" content="Université Paris-Saclay, CEA-List, Centrale Lyon, CNRS, Institut Universitaire de France (IUF)">
+  <!-- TODO: Same as paper title above -->
+  <meta property="og:title" content="GOAG: Generative and Object-Agnostic Grasp Planner for Dexterous Robotic Manipulation">
+  <!-- TODO: Same as description above -->
+  <meta property="og:description" content="We propose GOAG, a novel deep generative model that learns a compact latent representation of a specific gripper's contact surface distribution, enabling the efficient sampling of valid grasp configurations without relying on object-specific training data.">
+  <!-- TODO: Replace with your actual website URL -->
+  <meta property="og:url" content="https://cea-list.github.io/goagweb/">
+  <!-- TODO: Create a 1200x630px preview image and update path -->
+  <meta property="og:image" content="https://cea-list.github.io/goagweb/static/images/teaser.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="600">
+  <meta property="og:image:alt" content="GOAG: Generative and Object-Agnostic Grasp Planner for Dexterous Robotic Manipulation - Research Preview">
+  <meta property="article:published_time" content="2026-07-01T00:00:00.000Z">
+  <meta property="article:author" content="Julien Mérand">
+  <meta property="article:section" content="Research">
+  <meta property="article:tag" content="Robotics">
+  <meta property="article:tag" content="Grasping">
+  <meta property="article:tag" content="Manipulation">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <!-- TODO: Replace with your lab/institution Twitter handle -->
+  <meta name="twitter:site" content="@Julien_Merand">
+  <!-- TODO: Replace with first author's Twitter handle -->
+  <meta name="twitter:creator" content="@Julien_Merand">
+  <!-- TODO: Same as paper title above -->
+  <meta name="twitter:title" content="GOAG: Generative and Object-Agnostic Grasp Planner for Dexterous Robotic Manipulation">
+  <!-- TODO: Same as description above -->
+  <meta name="twitter:description" content="We propose GOAG, a novel deep generative model that learns a compact latent representation of a specific gripper's contact surface distribution, enabling the efficient sampling of valid grasp configurations without relying on object-specific training data.">
+  <!-- TODO: Same as social preview image above -->
+  <meta name="twitter:image" content="https://cea-list.github.io/goagweb/static/images/teaser.png">
+  <meta name="twitter:image:alt" content="GOAG - Research Preview">
+
+  <!-- Academic/Research Specific -->
+  <meta name="citation_title" content="GOAG: Generative and Object-Agnostic Grasp Planner for Dexterous Robotic Manipulation">
+  <meta name="citation_author" content="Mérand, Julien">
+  <meta name="citation_author" content="Meden, Boris">
+  <meta name="citation_author" content="Grossard, Mathieu">
+  <meta name="citation_author" content="Chen, Liming">
+  <meta name="citation_publication_date" content="2026">
+  <meta name="citation_conference_title" content="IROS">
+  <meta name="citation_pdf_url" content="https://cea-list.github.io/goagweb/static/pdfs/postprint_GOAG__Generative_and_Object_Agnostic_Grasp_Planner_for_Dexterous_Robotic_Manipulation.pdf">
+  
+  <!-- Additional SEO -->
+  <meta name="theme-color" content="#2563eb">
+  <meta name="msapplication-TileColor" content="#2563eb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  
+  <!-- Preconnect for performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://ajax.googleapis.com">
+  <link rel="preconnect" href="https://documentcloud.adobe.com">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+
+  <!-- TODO: Replace with your paper title and authors -->
+  <title>GOAG: Generative and Object-Agnostic Grasp Planner for Dexterous Robotic Manipulation - Julien Mérand, Boris Meden, Mathieu Grossard, Liming Chen</title>
+  
+  <!-- Favicon and App Icons -->
+  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+  <link rel="apple-touch-icon" href="static/images/favicon.ico">
+  
+  <!-- Critical CSS - Load synchronously -->
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+  
+  <!-- Non-critical CSS - Load asynchronously -->
+  <link rel="preload" href="static/css/bulma-carousel.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/bulma-slider.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="static/css/fontawesome.all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+  <!-- Fallback for browsers that don't support preload -->
+  <noscript>
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  </noscript>
+  
+  <!-- Fonts - Optimized loading -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Defer non-critical JavaScript -->
+  <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+  
+  <!-- Structured Data for Academic Papers -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "GOAG: Generative and Object-Agnostic Grasp Planner for Dexterous Robotic Manipulation",
+    "description": "We propose GOAG, a novel deep generative model that learns a compact latent representation of a specific gripper's contact surface distribution, enabling the efficient sampling of valid grasp configurations without relying on object-specific training data.",
+    "author": [
+      {
+        "@type": "Person",
+        "name": "Julien Mérand",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "Université Paris-Saclay, CEA-List"
+        }
+      },
+      {
+        "@type": "Person",
+        "name": "Boris Meden",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "Université Paris-Saclay, CEA-List"
+        }
+      },
+      {
+        "@type": "Person",
+        "name": "Mathieu Grossard",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "Université Paris-Saclay, CEA-List"
+        }
+      }
+      {
+        "@type": "Person",
+        "name": "Liming Chen",
+        "affiliation": {
+          "@type": "Organization",
+          "name": "Centrale Lyon, CNRS, LIRIS, UMR5205, Institut Universitaire de France (IUF)"
+        }
+      },
+    ],
+    "datePublished": "2026-07-01",
+    "publisher": {
+      "@type": "Organization",
+      "name": "2026 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)",
+    },
+    "url": "https://cea-list.github.io/goagweb/",
+    "image": "https://cea-list.github.io/goagweb/static/images/teaser.png",
+    "keywords": ["robotics", "grasping", "manipulation", "machine learning", "computer vision", "AI", "CVAE"],
+    "abstract": "Multifingered grasping is a crucial robotic skill, but current deep-learning grasp planners often struggle to generalize to new objects because they are trained on limited, object-specific datasets. We introduce a fundamentally different approach, grounded in the observation that the gripper and the object share identical surface geometry at their mutual contact points. We propose GOAG: Generative and Object-Agnostic Grasp Planner for Dexterous Robotic Manipulation, a novel deep generative model that learns a compact latent representation of a specific gripper's contact surface distribution, enabling the efficient sampling of valid grasp configurations without relying on object-specific training data. We show that by introducing object features only at inference time, our model can effectively retrieve admissible contact areas that are compatible with the gripper’s capabilities. We validate our approach through extensive experiments on established grasp protocols in both simulated and real-world scenarios, demonstrating its effectiveness with different grippers from the literature.
+Our method delivers state-of-the-art results on the objects from the MultiDex dataset, achieving an average success rate of $86.93\%$. It offers significantly faster processing when generating numerous grasps, while matching the performance of leading approaches specifically trained on this dataset. Unlike these methods, our approach does not rely on object-specific training data, highlighting the advantages of object-agnostic learning. It effectively addresses the generalization challenges faced by traditional data-driven grasp planners. The code will be made publicly available.",
+    "citation": "@inproceedings{merand2026goag,
+      title={GOAG: Generative and Object-Agnostic Grasp Planner for Dexterous Robotic Manipulation},
+      author={Mérand, Julien and Meden, Boris and Grossard, Mathieu and Chen, Liming},
+      booktitle = {2026 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+      year={2026}
+      url={https://cea-list.github.io/goagweb/}
+    }",
+    "isAccessibleForFree": true,
+    "license": "https://creativecommons.org/licenses/by/4.0/",
+    "mainEntity": {
+      "@type": "WebPage",
+      "@id": "https://cea-list.github.io/goagweb/"
+    },
+    "about": [
+      {
+        "@type": "Thing",
+        "name": "Grasp Synthesis"
+      },
+      {
+        "@type": "Thing", 
+        "name": "Multifingered Robotic Grasping"
+      }
+    ]
+  }
+  </script>
+  
+  <!-- Website/Organization Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Université Paris-Saclay, CEA-List, Centrale Lyon, CNRS, Institut Universitaire de France (IUF)",
+    "url": "https://cea-list.github.io/goagweb/",
+    "logo": "https://cea-list.github.io/goagweb/static/images/favicon.ico",
+    "sameAs": [
+      "https://twitter.com/Julien_Merand",
+      "https://github.com/JulienMerand",
+    ]
+  }
+  </script>
+
+  <!-- MathJax Configuration for LaTeX -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      options: {
+        ignoreHtmlClass: 'tex2jax_ignore',
+        processHtmlClass: 'tex2jax_process'
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>
+
+</head>
+<body>
+
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <!-- More Works Dropdown -->
+  <div class="more-works-container">
+    <button class="more-works-btn" onclick="toggleMoreWorks()" title="View More Works from Our Lab">
+      <i class="fas fa-flask"></i>
+      More Works
+      <i class="fas fa-chevron-down dropdown-arrow"></i>
+    </button>
+    <div class="more-works-dropdown" id="moreWorksDropdown">
+      <div class="dropdown-header">
+        <h4>More Related Works</h4>
+        <button class="close-btn" onclick="toggleMoreWorks()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="works-list">
+        <!-- TODO: Replace with your lab's related works -->
+        <a href="https://cea-list.github.io/cotograspweb/" class="work-item" target="_blank">
+          <div class="work-info">
+            <!-- TODO: Replace with actual paper title -->
+            <h5>CoToGrasp: Contact-Topology-Conditioned Dexterous Grasp Synthesis via Canonical Workspace Learning</h5>
+            <!-- TODO: Replace with brief description -->
+            <p>We propose CoToGrasp, a novel generative framework that synthesizes diverse, stable grasps strictly conditioned on specific contact topologies.</p>
+            <!-- TODO: Replace with venue and year -->
+            <span class="work-venue">19th European Conference on Computer Vision (ECCV 2026)</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+        <!-- TODO: Add more related works or remove extra items -->
+        <a href="https://arxiv.org/abs/2511.17276" class="work-item" target="_blank">
+          <div class="work-info">
+            <h5>Leveraging CVAE for joint configuration estimation of multifingered grippers from point cloud data</h5>
+            <p>This paper presents an efficient approach for determining the joint configuration of a multifingered gripper solely from the point cloud data of its poly-articulated chain, as generated by visual sensors, simulations or even generative neural networks.</p>
+            <span class="work-venue">2025 IEEE 21st International Conference on Automation Science and Engineering (CASE)</span>
+          </div>
+          <i class="fas fa-external-link-alt"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <main id="main-content">
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <!-- TODO: Replace with your paper title -->
+            <h1 class="title is-1 publication-title">GOAG: Generative and Object-Agnostic Grasp Planner for Dexterous Robotic Manipulation</h1>
+            <div class="is-size-5 publication-authors">
+              <!-- TODO: Replace with your paper authors and their personal links -->
+              <span class="author-block">
+                <a href="https://julienmerand.github.io/portfolio/" target="_blank">Julien Mérand</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=knXPf8oAAAAJ&hl=fr" target="_blank">Boris Meden</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a href="mailto:mathieu.grossard@cea.fr" target="_blank">Mathieu Grossard</a><sup>1</sup>,</span>
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=VOPW5YYAAAAJ&hl=fr" target="_blank">Liming Chen</a><sup>2</sup></span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <!-- TODO: Replace with your institution and conference/journal info -->
+              <span class="author-block">
+                <sup>1</sup>Université Paris-Saclay, CEA-List, &nbsp; &nbsp; 
+                <sup>2</sup>École Centrale de Lyon, CNRS, LIRIS, UMR5205, Institut Universitaire de France (IUF)
+                <br><br>2026 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) 
+              </span>
+              <!-- TODO: Remove this line if no equal contribution -->
+              <!-- <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span> -->
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                    <!-- TODO: Update with your arXiv paper ID -->
+                <span class="link-block">
+                  <a href="static/pdfs/postprint_GOAG__Generative_and_Object_Agnostic_Grasp_Planner_for_Dexterous_Robotic_Manipulation.pdf" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                  </a>
+                </span>
+
+                <!-- TODO: Add your supplementary material PDF or remove this section -->
+                <!-- <span class="link-block"> -->
+                  <!-- <a href="static/pdfs/CoToGrasp_Supp_Mat.pdf" target="_blank" -->
+                  <!-- class="external-link button is-normal is-rounded is-dark"> -->
+                  <!-- <span class="icon"> -->
+                    <!-- <i class="fas fa-file-pdf"></i> -->
+                  <!-- </span> -->
+                  <!-- <span>Supplementary</span> -->
+                  <!-- </a> -->
+                <!-- </span> -->
+
+                <!-- TODO: Replace with your GitHub repository URL -->
+                <span class="link-block">
+                  <a href="https://github.com/CEA-LIST/GOAG" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+                </span>
+
+                <!-- TODO: Update with your arXiv paper ID -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/<ARXIV PAPER ID>" target="_blank"
+                  class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                  </a>
+                </span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<!-- Teaser Image-->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="static/images/teaser.png" alt="Descriptive alt text for your teaser" id="teaser-image" style="width: 75%; height: auto; margin-left: auto; margin-right: auto; display: block;">
+      <h2 class="subtitle has-text-justified">
+        <strong>GOAG Paradigm.</strong> 
+        A successful grasp on an object induces dual contact zones on both object and gripper, at the intersection of the two geometries. Our method is built on this key observation: these contact zones $(\mathcal{C}(\cdot))$ are closely the same from either perspective. GOAG capitalizes on this by training exclusively on gripper geometry, allowing it to learn a robust and generalizable grasping strategy without ever being exposed to a grasp database with specific objects geometries.
+      </h2>
+    </div>
+  </div>
+</section>
+<!-- End teaser image -->
+
+
+<!-- Paper abstract -->
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <!-- TODO: Replace with your paper abstract -->
+          <p>
+          Multifingered grasping is a crucial robotic skill, but current deep-learning grasp planners often struggle to generalize to new objects because they are trained on limited, object-specific datasets. We introduce a fundamentally different approach, grounded in the observation that the gripper and the object share identical surface geometry at their mutual contact points. We propose GOAG: Generative and Object-Agnostic Grasp Planner for Dexterous Robotic Manipulation, a novel deep generative model that learns a compact latent representation of a specific gripper's contact surface distribution, enabling the efficient sampling of valid grasp configurations without relying on object-specific training data. We show that by introducing object features only at inference time, our model can effectively retrieve admissible contact areas that are compatible with the gripper’s capabilities. We validate our approach through extensive experiments on established grasp protocols in both simulated and real-world scenarios, demonstrating its effectiveness with different grippers from the literature.
+          <br>Our method delivers state-of-the-art results on the objects from the MultiDex dataset, achieving an average success rate of $86.93\%$. It offers significantly faster processing when generating numerous grasps, while matching the performance of leading approaches specifically trained on this dataset. Unlike these methods, our approach does not rely on object-specific training data, highlighting the advantages of object-agnostic learning. It effectively addresses the generalization challenges faced by traditional data-driven grasp planners.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End paper abstract -->
+
+<!-- Image carousel -->
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container">
+      <div id="static-overview" class="results-carousel">
+        <div class="item">
+          <!-- TODO: Replace with your research result images -->
+          <img src="static/images/overview_final.png" alt="First research result visualization" loading="lazy"/>
+          <!-- TODO: Replace with description of this result -->
+          <h2 class="subtitle has-text-justified">
+            <strong>Overview of GOAG.</strong> Geometrical graspability is learned in an object-agnostic manner by focusing on the gripper's capabilities. 
+            <br><br>
+            <strong>Training:</strong> We sample gripper configurations $Q$ to generate $\mathcal{H}(Q)$ and corresponding contact points $(\mathcal{C}(\mathcal{H}(Q)))$. To ensure transferability, we use a Basis Point Set (BPS) encoding tied to the gripper's workspace. A Conditional Variational Autoencoder (CVAE) is trained to reconstruct these contact distributions, while a Links Mapper (PointNet++) learns to associate contact points with specific gripper links. 
+            <br><br>
+            <strong>Inference:</strong> A novel object $\mathcal{O}$, positioned at the inverse gripper pose $[R,T]^{-1}$, is BPS-encoded. By sampling a latent variable $z \in \mathbb{R}^\psi$, the CVAE Decoder generatively predicts diverse, plausible contact points $\widehat{\mathcal{C}}(\mathcal{O})$. The Links Mapper then labels which gripper link should reach each point. 
+            <br><br>
+            <strong>Generation:</strong> Finally, a Force Closure check ensures the predicted contacts yield a stable grasp, and a Grasp Optimization step outputs the final, refined gripper configuration $Q^*$.
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End image carousel -->
+
+<!-- Youtube video -->
+<section class="hero is-small is-light">
+  <div class="hero-body">
+    <div class="container">
+      <!-- Paper video. -->
+      <h2 class="title is-3">Video Presentation</h2>
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          
+          <div class="publication-video">
+            <!-- TODO: Replace with your YouTube video ID -->
+            <!-- <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> -->
+            <video poster="" id="tree" controls loop height="100%" preload="metadata"> -->
+              <!-- TODO: Add your video file path here -->
+              <source src="static/videos/GOAG.mp4" type="video/mp4">
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End youtube video -->
+
+
+<section class="hero is-small">
+  <div class="hero-body">
+    <div class="container">
+      <h2 class="title is-3">Qualitative Results: Synthesized Grasps and Real-World Experiments</h2>
+      <div class="columns is-centered">
+
+        <div class="column">
+          <div class="results-carousel"> <div class="item">
+              <video id="video1" controls muted loop playsinline preload="metadata" style="border-radius: 8px;">
+                <source src="static/videos/synthetic_grasps.mp4" type="video/mp4">
+              </video>
+              <h2 class="subtitle has-text-justified">
+                <strong>Synthetic Results.</strong> Grasps are shown for the <span style="color:rgb(109, 212, 178)">Barrett</span>, <span style="color:rgb(216, 142, 176)">Allegro Hand</span>, and <span style="color:rgb(163, 148, 212)">Shadow Hand</span> grippers.
+              </h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="column">
+          <div class="results-carousel"> <div class="item">
+              <video id="video2" controls muted loop playsinline preload="metadata" style="border-radius: 8px;">
+                <source src="static/videos/Real_Exp.mp4" type="video/mp4">
+              </video>
+              <h2 class="subtitle has-text-justified">
+                <strong>Real-World Experiments.</strong> Demonstrating GOAG on real-world objects using the Allegro Hand in various scenarios.
+              </h2>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Paper poster -->
+<!-- <section class="hero is-small is-light"> -->
+  <!-- <div class="hero-body"> -->
+    <!-- <div class="container"> -->
+      <!-- <h2 class="title">Poster</h2> -->
+      <!-- TODO: Replace with your poster PDF -->
+      <!-- <iframe  src="static/pdfs/sample.pdf" width="100%" height="550"></iframe> -->
+      <!-- </div> -->
+    <!-- </div> -->
+  <!-- </section> -->
+<!--End paper poster -->
+
+
+<!--BibTex citation -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <div class="bibtex-header">
+        <h2 class="title">BibTeX</h2>
+        <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX to clipboard">
+          <i class="fas fa-copy"></i>
+          <span class="copy-text">Copy</span>
+        </button>
+      </div>
+      <pre id="bibtex-code"><code>@inproceedings{merand2026goag,
+  title={GOAG: Generative and Object-Agnostic Grasp Planner for Dexterous Robotic Manipulation},
+  author={Mérand, Julien and Meden, Boris and Grossard, Mathieu and Chen, Liming},
+  booktitle={2026 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  year={2026},
+  url={https://cea-list.github.io/goagweb/}
+}</code></pre>
+    </div>
+</section>
+<!--End BibTex citation -->
+
+
+  <footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+
+          <p>
+            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+            <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Statcounter tracking code -->
+  
+<!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
+
+    <!-- End of Statcounter Code -->
+
+  </body>
+  </html>
